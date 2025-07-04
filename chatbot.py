@@ -1,18 +1,19 @@
 import streamlit as st
 import time
-import os
 import openai
 
 # ------------------ OpenRouter API Setup ------------------
-openai.api_key = st.secrets["OPENROUTER_API_KEY"]
-openai.base_url = "https://openrouter.ai/api/v1"
+client = openai.OpenAI(
+    api_key=st.secrets["OPENROUTER_API_KEY"],
+    base_url="https://openrouter.ai/api/v1"
+)
 
 model = "mistralai/mixtral-8x7b-instruct"
 
 # ------------------ Streamlit Page Setup ------------------
 st.set_page_config(page_title="Samar AI • Quantum-Class Chatbot", layout="wide")
 
-# ------------------ Ultra-Futuristic Animated & Responsive CSS ------------------
+# ------------------ Custom CSS ------------------
 custom_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
@@ -143,7 +144,7 @@ with st.sidebar:
     st.markdown("""
         <h2 style='color:#00f2fe;'>☰ About This App</h2>
         <hr style='border:1px solid #333;'>
-        <p><strong>Samar AI</strong> is a next-generation multilingual chatbot assistant designed to simulate human-like conversations with intelligence, speed, and elegance. Built for global users, it adapts to your needs — whether you're a student, developer, business user, or tech enthusiast.</p>
+        <p><strong>Samar AI</strong> is a next-generation multilingual chatbot assistant designed to simulate human-like conversations with intelligence, speed, and elegance.</p>
         <ul>
             <li>🌍 International-ready</li>
             <li>🔐 Privacy focused</li>
@@ -153,7 +154,7 @@ with st.sidebar:
         <hr>
         <p>🚀 Crafted with ❤️ by <strong>Samar Abbas</strong><br>Vice President • Sports Society<br>University of Narowal</p>
     """, unsafe_allow_html=True)
-    st.button("🩼 Clear Chat Session", on_click=lambda: st.session_state.clear())
+    st.button("🦤 Clear Chat Session", on_click=lambda: st.session_state.clear())
 
 # ------------------ Title ------------------
 st.markdown("""
@@ -179,10 +180,10 @@ if send and user_input:
     with st.spinner("💡 Samar AI is processing..."):
         time.sleep(1.2)
         response = client.chat.completions.create(
-    model=model,
-    messages=st.session_state.messages
-    )
-        reply = response.choices[0].message["content"]
+            model=model,
+            messages=st.session_state.messages
+        )
+        reply = response.choices[0].message.content
 
     st.session_state.messages.append({"role": "assistant", "content": reply})
 
