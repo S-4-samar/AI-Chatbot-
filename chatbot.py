@@ -178,10 +178,10 @@ if send and user_input:
 
     with st.spinner("💡 Samar AI is processing..."):
         time.sleep(1.2)
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=st.session_state.messages
-        )
+        response = client.chat.completions.create(
+    model=model,
+    messages=st.session_state.messages
+    )
         reply = response.choices[0].message["content"]
 
     st.session_state.messages.append({"role": "assistant", "content": reply})
