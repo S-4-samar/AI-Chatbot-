@@ -3,11 +3,9 @@ import time
 import os
 import openai
 
-client = openai.OpenAI(
-    api_key=st.secrets["OPENROUTER_API_KEY"],
-    base_url="https://openrouter.ai/api/v1"
-)
-
+# ------------------ OpenRouter API Setup ------------------
+openai.api_key = st.secrets["OPENROUTER_API_KEY"]
+openai.base_url = "https://openrouter.ai/api/v1"
 
 model = "mistralai/mixtral-8x7b-instruct"
 
@@ -128,29 +126,13 @@ button:hover {
     100% {text-shadow: 0 0 25px #333399, 0 0 40px #333399;}
 }
 
-/* ----------- RESPONSIVE MEDIA QUERIES ----------- */
 @media screen and (max-width: 768px) {
-    .main-title {
-        font-size: 2.2em;
-    }
-    .subtitle {
-        font-size: 0.95em;
-    }
-    .glass-container {
-        padding: 1.5em;
-        margin: 1.5em;
-    }
-    input[type="text"] {
-        font-size: 0.9em;
-    }
-    button {
-        font-size: 0.9em;
-        padding: 10px 20px;
-    }
-    .message-box {
-        font-size: 0.9em;
-        padding: 1em;
-    }
+    .main-title { font-size: 2.2em; }
+    .subtitle { font-size: 0.95em; }
+    .glass-container { padding: 1.5em; margin: 1.5em; }
+    input[type="text"] { font-size: 0.9em; }
+    button { font-size: 0.9em; padding: 10px 20px; }
+    .message-box { font-size: 0.9em; padding: 1em; }
 }
 </style>
 """
@@ -171,7 +153,7 @@ with st.sidebar:
         <hr>
         <p>🚀 Crafted with ❤️ by <strong>Samar Abbas</strong><br>Vice President • Sports Society<br>University of Narowal</p>
     """, unsafe_allow_html=True)
-    st.button("🧼 Clear Chat Session", on_click=lambda: st.session_state.clear())
+    st.button("🩼 Clear Chat Session", on_click=lambda: st.session_state.clear())
 
 # ------------------ Title ------------------
 st.markdown("""
@@ -196,11 +178,11 @@ if send and user_input:
 
     with st.spinner("💡 Samar AI is processing..."):
         time.sleep(1.2)
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model=model,
             messages=st.session_state.messages
         )
-        reply = response.choices[0].message.content
+        reply = response.choices[0].message["content"]
 
     st.session_state.messages.append({"role": "assistant", "content": reply})
 
