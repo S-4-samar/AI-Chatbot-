@@ -1,12 +1,14 @@
 import streamlit as st
 import openai
 import time
+import os
 
-# ------------------ OpenRouter API Setup ------------------
+# ✅ Secure API key setup
 client = openai.OpenAI(
-    api_key="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",
+    api_key=os.getenv("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"),
     base_url="https://openrouter.ai/api/v1"
 )
+
 
 model = "mistralai/mixtral-8x7b-instruct"
 
