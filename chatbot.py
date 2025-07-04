@@ -1,11 +1,10 @@
 import streamlit as st
-import openai
 import time
 import os
+import openai
 
-# ✅ Secure API key setup
 client = openai.OpenAI(
-    api_key=os.getenv("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"),
+    api_key=os.getenv("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"),  
     base_url="https://openrouter.ai/api/v1"
 )
 
