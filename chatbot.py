@@ -3,12 +3,10 @@ import time
 from openai import OpenAI
 
 # ------------------ OpenRouter API Setup ------------------
-
 client = OpenAI(
     api_key=st.secrets["OPENROUTER_API_KEY"],
     base_url="https://openrouter.ai/api/v1"
 )
-
 
 model = "mistralai/mixtral-8x7b-instruct"
 
@@ -16,10 +14,8 @@ model = "mistralai/mixtral-8x7b-instruct"
 st.set_page_config(page_title="Samar AI • Quantum-Class Chatbot", layout="wide")
 
 # ------------------ Custom CSS ------------------
-custom_css = """
-<style>
+custom_css = """<style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
 body {
     background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
     font-family: 'Orbitron', sans-serif;
@@ -28,7 +24,6 @@ body {
     padding: 0;
     overflow-x: hidden;
 }
-
 .glass-container {
     background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(14px);
@@ -40,7 +35,6 @@ body {
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.1);
     animation: zoomIn 1s ease-in-out;
 }
-
 .main-title {
     font-size: 3em;
     text-align: center;
@@ -51,14 +45,12 @@ body {
     margin-bottom: 0.2em;
     animation: glowPulse 1.2s ease infinite alternate;
 }
-
 .subtitle {
     text-align: center;
     font-size: 1.1em;
     color: #cccccc;
     margin-bottom: 2.5em;
 }
-
 .message-box {
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255,255,255,0.07);
@@ -69,7 +61,6 @@ body {
     max-width: 90%;
     line-height: 1.6em;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.04);
-    transition: all 0.3s ease-in-out;
     word-wrap: break-word;
 }
 .user-msg {
@@ -118,17 +109,14 @@ button:hover {
     background: linear-gradient(135deg, #4facfe, #00f2fe);
     color: white;
 }
-
 @keyframes zoomIn {
     from {transform: scale(0.95); opacity: 0;}
     to {transform: scale(1); opacity: 1;}
 }
-
 @keyframes glowPulse {
     0% {text-shadow: 0 0 10px #ff00cc, 0 0 20px #ff00cc;}
     100% {text-shadow: 0 0 25px #333399, 0 0 40px #333399;}
 }
-
 @media screen and (max-width: 768px) {
     .main-title { font-size: 2.2em; }
     .subtitle { font-size: 0.95em; }
@@ -137,8 +125,7 @@ button:hover {
     button { font-size: 0.9em; padding: 10px 20px; }
     .message-box { font-size: 0.9em; padding: 1em; }
 }
-</style>
-"""
+</style>"""
 st.markdown(custom_css, unsafe_allow_html=True)
 
 # ------------------ Sidebar ------------------
@@ -180,12 +167,14 @@ if send and user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
 
     with st.spinner("💡 Samar AI is processing..."):
-        time.sleep(1.2)
-        response = client.chat.completions.create(
-            model=model,
-            messages=st.session_state.messages
-        )
-        reply = response.choices[0].message.content
+        try:
+            response = client.chat.completions.create(
+                model=model,
+                messages=st.session_state.messages
+            )
+            reply = response.choices[0].message.content
+        except Exception as e:
+            reply = f"⚠️ Error: {e}"
 
     st.session_state.messages.append({"role": "assistant", "content": reply})
 
