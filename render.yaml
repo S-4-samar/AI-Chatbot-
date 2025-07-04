@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: samar-ai-chatbot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run chatbot.py --server.port=10000 --server.address=0.0.0.0
+    envVars:
+      - key: OPENAI_API_KEY
+        value: sk-or-xxxxxxxxxxxx
