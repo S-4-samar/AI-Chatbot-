@@ -3,10 +3,12 @@ import time
 import openai
 
 # ------------------ OpenRouter API Setup ------------------
-client = openai.OpenAI(
+
+client = OpenAI(
     api_key=st.secrets["OPENROUTER_API_KEY"],
     base_url="https://openrouter.ai/api/v1"
 )
+
 
 model = "mistralai/mixtral-8x7b-instruct"
 
